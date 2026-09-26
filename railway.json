@@ -1,0 +1,334 @@
+{
+  "services": {
+    "9eeaede8-f2eb-4c67-a650-66f40aa4ac9d": {
+      "icon": null,
+      "name": "billmora-app",
+      "deploy": {
+        "startCommand": null,
+        "healthcheckPath": null
+      },
+      "source": {
+        "image": "ghcr.io/billmora/billmora:latest"
+      },
+      "variables": {
+        "APP_NAME": {
+          "defaultValue": "Billmora"
+        },
+        "APP_ENV": {
+          "defaultValue": "production"
+        },
+        "APP_KEY": {
+          "defaultValue": "base64:${{DB_PASSWORD}}"
+        },
+        "APP_URL": {
+          "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DB_CONNECTION": {
+          "defaultValue": "mariadb"
+        },
+        "DB_HOST": {
+          "defaultValue": "${{billmora-db.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_PORT": {
+          "defaultValue": "3306"
+        },
+        "DB_DATABASE": {
+          "defaultValue": "billmora"
+        },
+        "DB_USERNAME": {
+          "defaultValue": "billmora"
+        },
+        "DB_PASSWORD": {
+          "defaultValue": "${{ secret(16, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\") }}"
+        },
+        "REDIS_HOST": {
+          "defaultValue": "${{billmora-redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{billmora-app.DB_PASSWORD}}"
+        },
+        "REDIS_PORT": {
+          "defaultValue": "6379"
+        },
+        "SESSION_DRIVER": {
+          "defaultValue": "redis"
+        },
+        "CACHE_STORE": {
+          "defaultValue": "redis"
+        },
+        "QUEUE_CONNECTION": {
+          "defaultValue": "redis"
+        },
+        "AUTORUN_ENABLED": {
+          "defaultValue": "true"
+        },
+        "AUTORUN_LARAVEL_MIGRATION": {
+          "defaultValue": "true"
+        },
+        "AUTORUN_LARAVEL_MIGRATION_FORCE": {
+          "defaultValue": "true"
+        },
+        "AUTORUN_LARAVEL_MIGRATION_SEED": {
+          "defaultValue": "true"
+        },
+        "AUTORUN_LARAVEL_STORAGE_LINK": {
+          "defaultValue": "true"
+        },
+        "PORT": {
+          "defaultValue": "8080"
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>": {}
+        }
+      },
+      "volumeMounts": {
+        "9eeaede8-f2eb-4c67-a650-66f40aa4ac9d": {
+          "mountPath": "/var/www/html/storage"
+        }
+      }
+    },
+    "4d2d27b6-8dff-4788-b5f4-9cfcb52e02a6": {
+      "icon": null,
+      "name": "billmora-worker",
+      "deploy": {
+        "startCommand": "php artisan queue:work --sleep=3 --tries=3 --max-time=3600",
+        "healthcheckPath": null
+      },
+      "source": {
+        "image": "ghcr.io/billmora/billmora:latest"
+      },
+      "variables": {
+        "APP_NAME": {
+          "defaultValue": "Billmora"
+        },
+        "APP_ENV": {
+          "defaultValue": "production"
+        },
+        "APP_KEY": {
+          "defaultValue": "base64:${{DB_PASSWORD}}"
+        },
+        "APP_URL": {
+          "defaultValue": "https://${{billmora-app.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DB_CONNECTION": {
+          "defaultValue": "mariadb"
+        },
+        "DB_HOST": {
+          "defaultValue": "${{billmora-db.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_PORT": {
+          "defaultValue": "3306"
+        },
+        "DB_DATABASE": {
+          "defaultValue": "billmora"
+        },
+        "DB_USERNAME": {
+          "defaultValue": "billmora"
+        },
+        "DB_PASSWORD": {
+          "defaultValue": "${{billmora-app.DB_PASSWORD}}"
+        },
+        "REDIS_HOST": {
+          "defaultValue": "${{billmora-redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{billmora-app.DB_PASSWORD}}"
+        },
+        "REDIS_PORT": {
+          "defaultValue": "6379"
+        },
+        "SESSION_DRIVER": {
+          "defaultValue": "redis"
+        },
+        "CACHE_STORE": {
+          "defaultValue": "redis"
+        },
+        "QUEUE_CONNECTION": {
+          "defaultValue": "redis"
+        },
+        "AUTORUN_ENABLED": {
+          "defaultValue": "false"
+        }
+      },
+      "volumeMounts": {
+        "4d2d27b6-8dff-4788-b5f4-9cfcb52e02a6": {
+          "mountPath": "/var/www/html/storage"
+        }
+      }
+    },
+    "046882c4-00a3-4f0e-a470-1e45e03671ae": {
+      "icon": null,
+      "name": "billmora-scheduler",
+      "deploy": {
+        "startCommand": "/bin/sh -c \"while true; do php artisan schedule:run >> /dev/null 2>&1; sleep 60; done\"",
+        "healthcheckPath": null
+      },
+      "source": {
+        "image": "ghcr.io/billmora/billmora:latest"
+      },
+      "variables": {
+        "APP_NAME": {
+          "defaultValue": "Billmora"
+        },
+        "APP_ENV": {
+          "defaultValue": "production"
+        },
+        "APP_KEY": {
+          "defaultValue": "base64:${{DB_PASSWORD}}"
+        },
+        "APP_URL": {
+          "defaultValue": "https://${{billmora-app.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DB_CONNECTION": {
+          "defaultValue": "mariadb"
+        },
+        "DB_HOST": {
+          "defaultValue": "${{billmora-db.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_PORT": {
+          "defaultValue": "3306"
+        },
+        "DB_DATABASE": {
+          "defaultValue": "billmora"
+        },
+        "DB_USERNAME": {
+          "defaultValue": "billmora"
+        },
+        "DB_PASSWORD": {
+          "defaultValue": "${{billmora-app.DB_PASSWORD}}"
+        },
+        "REDIS_HOST": {
+          "defaultValue": "${{billmora-redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{billmora-app.DB_PASSWORD}}"
+        },
+        "REDIS_PORT": {
+          "defaultValue": "6379"
+        },
+        "SESSION_DRIVER": {
+          "defaultValue": "redis"
+        },
+        "CACHE_STORE": {
+          "defaultValue": "redis"
+        },
+        "QUEUE_CONNECTION": {
+          "defaultValue": "redis"
+        },
+        "AUTORUN_ENABLED": {
+          "defaultValue": "false"
+        }
+      },
+      "volumeMounts": {
+        "046882c4-00a3-4f0e-a470-1e45e03671ae": {
+          "mountPath": "/var/www/html/storage"
+        }
+      }
+    },
+    "b154e0f0-1137-4456-a90b-2950b9211807": {
+      "icon": "https://devicons.railway.app/i/mariadb.svg",
+      "name": "billmora-db",
+      "deploy": {
+        "startCommand": null,
+        "healthcheckPath": null
+      },
+      "source": {
+        "image": "mariadb:11"
+      },
+      "variables": {
+        "MYSQLHOST": {
+          "defaultValue": "${{RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "MYSQLPORT": {
+          "defaultValue": "3306"
+        },
+        "MYSQLUSER": {
+          "defaultValue": "${{MYSQL_USER}}"
+        },
+        "MYSQLDATABASE": {
+          "defaultValue": "${{MYSQL_DATABASE}}"
+        },
+        "MYSQLPASSWORD": {
+          "defaultValue": "${{MYSQL_PASSWORD}}"
+        },
+        "MYSQL_DATABASE": {
+          "defaultValue": "${{billmora-app.DB_DATABASE}}"
+        },
+        "MYSQL_USER": {
+          "defaultValue": "${{billmora-app.DB_USERNAME}}"
+        },
+        "MYSQL_PASSWORD": {
+          "defaultValue": "${{ secret(32, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\") }}"
+        },
+        "MYSQL_ROOT_PASSWORD": {
+          "defaultValue": "${{MYSQL_PASSWORD}}"
+        },
+        "DATABASE_URL": {
+          "defaultValue": "mysql://${{MYSQL_USER}}:${{MYSQL_PASSWORD}}@${{RAILWAY_PRIVATE_DOMAIN}}:3306/${{MYSQL_DATABASE}}"
+        },
+        "MYSQL_URL": {
+          "defaultValue": "mysql://${{MYSQL_USER}}:${{MYSQL_PASSWORD}}@${{RAILWAY_PRIVATE_DOMAIN}}:3306/${{MYSQL_DATABASE}}"
+        },
+        "DATABASE_PUBLIC_URL": {
+          "defaultValue": "mysql://${{MYSQL_USER}}:${{MYSQL_PASSWORD}}@${{RAILWAY_TCP_PROXY_DOMAIN}}:${{RAILWAY_TCP_PROXY_PORT}}/${{MYSQL_DATABASE}}"
+        }
+      },
+      "networking": {
+        "tcpProxies": {
+          "3306": {}
+        }
+      },
+      "volumeMounts": {
+        "b154e0f0-1137-4456-a90b-2950b9211807": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    },
+    "1ef205ad-7216-438a-a629-52c08abcaaa6": {
+      "icon": "https://devicons.railway.app/i/redis.svg",
+      "name": "billmora-redis",
+      "deploy": {
+        "startCommand": null,
+        "healthcheckPath": null
+      },
+      "source": {
+        "image": "redis:7-alpine"
+      },
+      "variables": {
+        "REDISHOST": {
+          "defaultValue": "${{RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDISUSER": {
+          "defaultValue": "default"
+        },
+        "REDISPORT": {
+          "defaultValue": "6379"
+        },
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{billmora-db.MYSQL_PASSWORD}}"
+        },
+        "REDISPASSWORD": {
+          "defaultValue": "${{REDIS_PASSWORD}}"
+        },
+        "REDIS_URL": {
+          "defaultValue": "redis://default:${{REDIS_PASSWORD}}@${{RAILWAY_PRIVATE_DOMAIN}}:6379"
+        },
+        "REDIS_PUBLIC_URL": {
+          "defaultValue": "redis://default:${{REDIS_PASSWORD}}@${{RAILWAY_TCP_PROXY_DOMAIN}}:${{RAILWAY_TCP_PROXY_PORT}}"
+        }
+      },
+      "networking": {
+        "tcpProxies": {
+          "6379": {}
+        }
+      },
+      "volumeMounts": {
+        "1ef205ad-7216-438a-a629-52c08abcaaa6": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}
